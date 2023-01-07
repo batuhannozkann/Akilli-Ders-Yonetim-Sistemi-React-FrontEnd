@@ -7,20 +7,27 @@ import ErrorMessage from "./ErrorMessage"
 
 
 const Login = (props)=>{
+    const dispatch = useDispatch();
+    const [message,setMessage] = useState([]);
+    const [loginForm,setLoginForm] = useState({
+        UserName:"",
+        Password:""
+    });
+    const auth = useSelector((state)=>state.auth.user);
+    useEffect(()=>{
+        if(auth==true)
+        {
+            props.history.push("/")
+        }
+    },[auth])
     useEffect(()=>{
         const token = sessionStorage.getItem("accessToken");
         if(token){
             props.history.push("/");
         }
     },[])
-    const auth = useSelector((state)=>state.auth.user);
-    const dispatch = useDispatch();
-    const user = useSelector((state)=>state.auth)
-    const [message,setMessage] = useState([]);
-    const [loginForm,setLoginForm] = useState({
-        UserName:"",
-        Password:""
-    });
+    
+    
     const checkMessage = message.length!==0
     const onChange = (e)=>{
         setLoginForm({...loginForm,[e.target.name]:e.target.value});
@@ -28,21 +35,21 @@ const Login = (props)=>{
     const handlerSubmit = (e)=>{
         e.preventDefault();
         postForm(loginForm);
-        props.history.push("/")
     }
         const postForm = async (loginForm)=>{
             try{
                await axios.post("https://localhost:7082/api/Auth",loginForm)
                 .then((response)=>{
                     console.log(response.data.data);
-                    sessionStorage.setItem("accessToken",JSON.stringify(response.data.data.accessToken));
+                    sessionStorage.setItem("accessToken",response.data.data.accessToken);
+                    sessionStorage.setItem("refreshToken",response.data.data.refreshToken);
                     sessionStorage.setItem("User",JSON.stringify(response.data.data.user));
                     dispatch(login(response.data.data.user));
                 });
             }
             catch(e)
             {
-                console.log({e});
+                setMessage(e.response.data.errors);
             }
            
         } 
@@ -56,7 +63,6 @@ const Login = (props)=>{
             errormessage:"Boş bırakılamaz",
             label:"Kullanıcı adı/Ogrenci no",
             required:true,
-            pattern:"[A-Za-z]{1-16}",
             maxLength:16
         },
         {

@@ -1,12 +1,12 @@
 import {configureStore} from "@reduxjs/toolkit"
 
 
-import todos from "./todo"
+import todo from "./todo"
 import auth, { authenticated,login,logout} from "./auth"
 
 const store = configureStore({
     reducer:{
-        todos,
+        todo,
         auth
     }
 })

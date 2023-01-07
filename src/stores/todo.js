@@ -1,22 +1,20 @@
 import {createSlice} from "@reduxjs/toolkit"
 
 const initialState={
-    todos:[]
+    location:""
 }
 
-const todos = createSlice({
-    name:'todos',
+const todo = createSlice({
+    name:'todo',
     initialState,
     reducers:{
-        addTodo:(state,action)=>{
-            state.todos=[
-                action.payload,
-                ...state.todos
-            ]
+        location:(state,action)=>{
+            state.location=action.payload
+        }
         }
 
-    }
+    
 })
 
-export const {addTodo} = todos.actions
-export default todos.reducer
+export const {location} = todo.actions
+export default todo.reducer

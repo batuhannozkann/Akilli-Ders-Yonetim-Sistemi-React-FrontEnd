@@ -27,8 +27,7 @@ const auth = createSlice({
         },
         logout:state=>{
             state.user=false
-            sessionStorage.removeItem("accessToken")
-            sessionStorage.removeItem("User")
+            sessionStorage.clear()
         }
     }
 })

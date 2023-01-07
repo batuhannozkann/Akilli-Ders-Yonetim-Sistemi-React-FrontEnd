@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import {useDispatch,useSelector} from "react-redux";
-import {logout} from "../stores/auth"
-import { Link } from "react-router-dom";
+import {logout} from "../stores/auth";
+import {location} from "../stores/todo";
+import { Link,useLocation } from "react-router-dom";
 const NavbarNm = (props) =>{
     const auth = useSelector((state)=>state.auth.user);
     const users = useSelector((state)=>state.auth)
-    console.log(users);
+    const locationState = useLocation();
     const dispatch = useDispatch();
+    dispatch(location(locationState.pathname));
     const [active,setActive] = useState("");
     const activeItem = "item active";
     const normalItem = "item";
     return(
-    <div className="ui inverted segment">
+    <div className="ui inverted segment" style={{margin:0}}>
     <div className="ui inverted secondary pointing menu">
     <div className="item">
       <img style={{width: '60px', height: 'auto',marginRight:40}}src="adyslogo1.png"></img>
@@ -29,7 +31,7 @@ const NavbarNm = (props) =>{
       <div className="right menu">
       {auth?<>
       <div className="item active" style={{marginBottom:10}}>{users.userProps.firstName +" "+ users.userProps.lastName}</div>
-      <Link onClick={()=>dispatch(logout())}  className="item"><p className="ui primary button">Logout</p></Link></>
+      <Link to="/" onClick={()=>dispatch(logout())}  className="item"><p className="ui primary button">Çıkış Yap</p></Link></>
       :
       <>
       <Link to="/Giris" className="item"><p className="ui primary button">Giriş Yap</p></Link>

@@ -2,8 +2,17 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from 'react-responsive'
 import { Menu, MenuItem, Sidebar } from 'semantic-ui-react'
+import { useSelector,useDispatch } from "react-redux";
+import {logout} from "../stores/auth"
 
 const NavbarSm = (props)=>{
+    const auth = useSelector((state)=>state.auth.user);
+    const users = useSelector((state)=>state.auth)
+    const dispatch = useDispatch();
+    const handleItemClick = (e, { name }) => setactiveItem(name)
+    const [visible, setVisible] = useState(false)
+    const [icon, setIcon] = useState(HamIcon)
+    const [activeItem, setactiveItem] = useState("Anasayfa")
     const hideSidebar = () => {
         setIcon(HamIcon)
         setVisible(false)
@@ -21,10 +30,6 @@ const NavbarSm = (props)=>{
       function CloseIcon() {
         return (<i className="big close red icon" />)
       }
-        const handleItemClick = (e, { name }) => setactiveItem(name)
-        const [visible, setVisible] = useState(false)
-        const [icon, setIcon] = useState(HamIcon)
-        const [activeItem, setactiveItem] = useState("Anasayfa")
     return(
         <><Menu inverted
             size="tiny"
@@ -51,6 +56,9 @@ const NavbarSm = (props)=>{
                     <img src="adyslogo1.png" width="" height="" style={{ margin: "0 auto" }} alt="" />
                 </Menu.Item>
                 <Menu.Item
+                name={users.userProps.firstName +" "+ users.userProps.lastName}
+                />
+                <Menu.Item
                     as={Link}
                     to='/'
                     name='Anasayfa'
@@ -68,19 +76,24 @@ const NavbarSm = (props)=>{
                     name='Hakkında'
                     active={activeItem === 'Hakkında'}
                     onClick={handleItemClick} />
-                <Menu.Item
+                {auth?<Menu.Item
+                        as={Link}
+                        name="Çıkış Yap"
+                        to="/"
+                        onClick={()=>dispatch(logout())}
+                        />:<><Menu.Item
                     as={Link}
                     to="/Giris"
                     name='Giriş Yap'
                     active={activeItem === 'Giriş Yap'}
                     onClick={handleItemClick}
-                    position="right" />
-                <Menu.Item
-                    as={Link}
-                    to="/Kayitol"
-                    name='Kayıt Ol'
-                    active={activeItem === 'Kayıt Ol'}
-                    onClick={handleItemClick} />
+                    position="right" /><Menu.Item
+                        as={Link}
+                        to="/Kayitol"
+                        name='Kayıt Ol'
+                        active={activeItem === 'Kayıt Ol'}
+                        onClick={handleItemClick} /></>
+                        }
             </Sidebar></>
         )
     

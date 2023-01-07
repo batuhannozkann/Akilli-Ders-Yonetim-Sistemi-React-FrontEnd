@@ -1,6 +1,9 @@
 import React from "react";
 import {Header,Image,Icon,Grid, Divider, Segment,Button} from "semantic-ui-react"
+import {Link} from "react-router-dom"
+import {useSelector} from "react-redux"
 const HomePage = (props)=>{
+    const auth = useSelector(state=>state.auth.user);
     return (
         <><div style={{backgroundColor:'#EFEFEE'}}>
             <Header as='h2' icon textAlign='center' style={{ paddingTop:30,backgroundColor: '#A0DEF5',margin:0}}>
@@ -15,7 +18,8 @@ const HomePage = (props)=>{
             <Icon name='sign-in' />
             Öğrenci kendi derslerine ait ders notlarını indirebilir, verilen uygulamaları / ödevleri takip edebilir ve uygulama / ödev gönderebilir.
           </Header>
-          <Button primary>Giriş Yap</Button>
+          {auth?<Link to="/Derslerim"><Button className="primary">Derslerim</Button></Link>
+          :<Link to ="/Giris"><Button className="primary">Giriş Yap</Button></Link>}
         </Grid.Column>
         </Grid.Row>
         <Grid.Row>
