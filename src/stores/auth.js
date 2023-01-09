@@ -10,7 +10,9 @@ const initialState={
         FirstName:"",
         LastName:"",
         StudentNumber:"",
-    }
+        
+    },
+    Lesson:[]
 }
 
 const auth = createSlice({
@@ -28,8 +30,11 @@ const auth = createSlice({
         logout:state=>{
             state.user=false
             sessionStorage.clear()
+        },
+        setLessons:(state,action)=>{
+            state.Lesson=action.payload
         }
     }
 })
-export const {login,logout,authenticated} = auth.actions
+export const {login,logout,authenticated,setLessons} = auth.actions
 export default auth.reducer;

@@ -8,14 +8,20 @@ import HomePage from "./components/HomePage";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import { useDispatch, useSelector } from "react-redux";
-import {login} from "./stores/auth";
+import {login,setLessons} from "./stores/auth";
 import axios from "axios";
+import LessonList from "./components/LessonList";
+import AboutUser from "./components/AboutUser";
+import ResetPassword from "./components/ResetPassword";
+import ForgotPassword from "./components/ForgotPassword";
 function App() {
   const dispatch = useDispatch();
   const location = useSelector(state=>state.todo);
+  dispatch(setLessons(JSON.parse(sessionStorage.getItem("Lessons"))))
   useEffect(()=>{
     if(sessionStorage.getItem("accessToken"))
     {
+      dispatch(setLessons(JSON.parse(sessionStorage.getItem("Lessons"))))
       dispatch(login(JSON.parse(sessionStorage.getItem("User"))));
     
          axios.get("https://localhost:7082/api/Auth/AuthValid",{headers:{
@@ -48,6 +54,10 @@ function App() {
         <Route path="/Hakkinda" component={Hakkinda}></Route>
         <Route path="/Kayitol" component ={Register}></Route>
         <Route path="/Giris" component={Login}></Route>
+        <Route path="/Dersler" component={LessonList}></Route>
+        <Route path="/Bilgiler" component={AboutUser}></Route>
+        <Route path="/SifremiSifirla" component={ResetPassword}></Route>
+        <Route path="/SifremiUnuttum" component={ForgotPassword}></Route>
       </header>
     </div>
     </Router>

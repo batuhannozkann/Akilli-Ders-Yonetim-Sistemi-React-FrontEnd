@@ -1,7 +1,7 @@
 import React,{useEffect, useState} from "react";
 import axios from "axios";
 import {useDispatch,useSelector} from "react-redux";
-import { authenticated,login,logout } from "../stores/auth";
+import { authenticated,login,logout,setLessons } from "../stores/auth";
 import {Header,Segment,Form,Button,Message} from "semantic-ui-react";
 import ErrorMessage from "./ErrorMessage"
 
@@ -26,8 +26,6 @@ const Login = (props)=>{
             props.history.push("/");
         }
     },[])
-    
-    
     const checkMessage = message.length!==0
     const onChange = (e)=>{
         setLoginForm({...loginForm,[e.target.name]:e.target.value});
@@ -35,6 +33,18 @@ const Login = (props)=>{
     const handlerSubmit = (e)=>{
         e.preventDefault();
         postForm(loginForm);
+    }
+    const getLessons=()=>{
+        try{
+            axios.get("https://localhost:7082/api/Student/GetLessonsOfStudent/2180656011").
+        then((response)=>{
+            console.log(response.data.data[0].lessons);
+            sessionStorage.setItem("Lessons",JSON.stringify(response.data.data[0]));
+        })}
+        catch(e)
+        {
+            console.log(e);
+        }
     }
         const postForm = async (loginForm)=>{
             try{
@@ -45,6 +55,7 @@ const Login = (props)=>{
                     sessionStorage.setItem("refreshToken",response.data.data.refreshToken);
                     sessionStorage.setItem("User",JSON.stringify(response.data.data.user));
                     dispatch(login(response.data.data.user));
+                    getLessons();
                 });
             }
             catch(e)
