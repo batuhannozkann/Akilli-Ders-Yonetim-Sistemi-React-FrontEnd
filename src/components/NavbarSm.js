@@ -70,12 +70,6 @@ const NavbarSm = (props)=>{
                     name='Açık Ders Kütüphanesi'
                     active={activeItem === 'Açık Ders Kütüphanesi'}
                     onClick={handleItemClick} />
-                <Menu.Item
-                     as={Link}
-                     to='/Hakkinda'
-                    name='Hakkında'
-                    active={activeItem === 'Hakkında'}
-                    onClick={handleItemClick} />
                 {auth?<Menu.Item
                         as={Link}
                         name="Çıkış Yap"

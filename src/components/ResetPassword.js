@@ -1,13 +1,19 @@
 
 import axios from "axios";
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import {Header,Segment,Form,Button} from "semantic-ui-react"
+import SuccessMessage from "./SuccesMessage";
 
 const ResetPassword=(props)=>{
+    const [success,setSuccess] = useState(false);
     const [formValues,setFormValues] = useState({
         Password:"",
         PasswordValid:""
     })
+    useEffect(()=>{
+        setTokenUsername({userName:props.location.pathname.split("/")[props.location.pathname.split("/").length-1],
+        token:props.location.pathname.split("SifremiSifirla/",2)[1]});
+    },[])
     const [tokenUsername,setTokenUsername] = useState({
         userName:"",
         token:"",
@@ -43,17 +49,18 @@ const ResetPassword=(props)=>{
         
     ]
      const onSubmitHandler=()=>{
-        setTokenUsername({userName:props.location.pathname.split("/")[props.location.pathname.split("/").length-1],
-        token:props.location.pathname.split("SifremiSifirla/",2)[1],
-        password:formValues.Password});
-        axios.post("https://localhost:7082/api/User/UpdatePassword",tokenUsername)
-        .then((response)=>{console.log(response)}).catch((e)=>{console.log(e)});
+        axios.post("https://localhost:7082/api/User/UpdatePassword",{UserName:props.location.pathname.split("/")[props.location.pathname.split("/").length-1].toString(),
+        Password:formValues.Password.toString(),
+        Token:props.location.pathname.split("/")[props.location.pathname.split("/").length-2].toString()
+    })
+        .then((response)=>{console.log(response);
+            response.status==200?setSuccess(true):setSuccess(false)
+        }).catch((e)=>{console.log(e)});
      }
-    console.log(props.location.pathname.split("SifremiSifirla/",2))
-    console.log(props.location.pathname.split("/")[props.location.pathname.split("/").length-1])
     return(
                 
-            <><Header textAlign="center" style={{ fontSize: '2em', marginTop: '15vh' }}>ŞİFRE SIFIRLAMA</Header><Segment className="center text container inverted " style={{ marginTop: '5vh' }}>
+            <>{success?<SuccessMessage Message="Şifreniz başarıyla değiştirilmiştir"></SuccessMessage>:""}
+            <Header textAlign="center" style={{ fontSize: '2em', marginTop: '15vh' }}>ŞİFRE SIFIRLAMA</Header><Segment className="center text container inverted " style={{ marginTop: '5vh' }}>
             <Form >
                 {inputs.map((i) => {
                     return (

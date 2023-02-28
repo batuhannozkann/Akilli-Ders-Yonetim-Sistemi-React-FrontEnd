@@ -1,11 +1,16 @@
-import React,{useState} from "react"
+import React,{useEffect, useState} from "react"
 import {Form,Button,Segment,Header} from "semantic-ui-react"
 import axios from "axios";
 import { calculateNewValue } from "@testing-library/user-event/dist/utils";
 import ErrorMessage from "./ErrorMessage";
+import { useSelector } from "react-redux";
 
 const Register = (props)=>{
-    console.log(props);
+    const auth = useSelector(state=>state.auth.user);
+    useEffect(()=>{
+        auth?props.history.push("/"):console.log("Kayıt olabilir");
+    },[])
+    console.log(auth)
     const [message,setMessage] = useState([]);
     const checkMessage = message.length!==0;
     const [formValues,setFormValues] = useState({
@@ -27,14 +32,12 @@ const Register = (props)=>{
          try{
             await axios.post("https://localhost:7082/api/User",user)
             .then((data) =>{
-                console.log(data)
             });
             props.history.push("/");
         }
         catch(error)
         {
             setMessage(error.response.data.errors);
-            console.log(error.response.data.errors);
         }
         
     }
@@ -128,7 +131,6 @@ const Register = (props)=>{
                         </Form.Field>);
 
                 })}
-                {console.log(formValues)}
                 <Button style={{backgroundColor:"#027373",color:"white"}} type='submit'>Kayıt Ol</Button>
             </Form>
         </Segment></>

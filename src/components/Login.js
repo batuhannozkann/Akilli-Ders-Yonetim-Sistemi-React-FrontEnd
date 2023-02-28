@@ -4,6 +4,7 @@ import {useDispatch,useSelector} from "react-redux";
 import { authenticated,login,logout,setLessons } from "../stores/auth";
 import {Header,Segment,Form,Button,Message} from "semantic-ui-react";
 import ErrorMessage from "./ErrorMessage"
+import {Link} from "react-router-dom"
 
 
 const Login = (props)=>{
@@ -17,7 +18,7 @@ const Login = (props)=>{
     useEffect(()=>{
         if(auth==true)
         {
-            props.history.push("/")
+            props.history.push("/");
         }
     },[auth])
     useEffect(()=>{
@@ -36,7 +37,7 @@ const Login = (props)=>{
     }
     const getLessons=()=>{
         try{
-            axios.get("https://localhost:7082/api/Student/GetLessonsOfStudent/2180656011").
+            axios.get(`https://localhost:7082/api/Student/GetLessonsOfStudent/${loginForm.UserName}`).
         then((response)=>{
             console.log(response.data.data[0].lessons);
             sessionStorage.setItem("Lessons",JSON.stringify(response.data.data[0]));
@@ -103,9 +104,12 @@ const Login = (props)=>{
                             <input {...i} value={loginForm[i.name]} onChange={onChange} />
                             <span>{i.errormessage}</span>
                         </Form.Field>);
+                        
 
                 })}
-                <Button style={{ backgroundColor: "#027373", color: "white" }} type='submit'>Giriş Yap</Button>
+                <Link to="/SifremiUnuttum">Sifremi Unuttum</Link>
+                <br/>
+                <Button style={{ backgroundColor: "#027373", color: "white",marginTop:"2%" }} type='submit'>Giriş Yap</Button>
             </Form>
         </Segment></></>);
 }

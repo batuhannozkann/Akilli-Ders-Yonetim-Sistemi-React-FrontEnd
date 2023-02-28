@@ -24,13 +24,10 @@ const NavbarNm = (props) =>{
       <Link to="/Dersler"onClick={()=>setActive("Messages")} className={active=="Messages"?activeItem:normalItem}>
         Açık Ders Kütüphanesi
       </Link>
-      <Link to="/Hakkinda" onClick={()=>setActive("Friends")} className={active=="Friends"?activeItem:normalItem}>
-        Hakkında
-      </Link>
-      {auth?<Link onClick={()=>setActive("Lessons")} className={active=="Lessons"?activeItem:normalItem}>Derslerim</Link>:""}
+      {auth?<Link to="/Derslerim" onClick={()=>setActive("Lessons")} className={active=="Lessons"?activeItem:normalItem}>Derslerim</Link>:""}
       <div className="right menu">
       {auth?<>
-      <Link style={{marginTop:10}} to="/Bilgiler"><div className="item active" style={{marginBottom:10}}>{users.userProps.firstName +" "+ users.userProps.lastName}</div></Link>
+      <Link style={{marginTop:10}} to="/Bilgilerim"><div className="item active" style={{marginBottom:10}}>{users.userProps.firstName +" "+ users.userProps.lastName}</div></Link>
       <Link to="/" onClick={()=>dispatch(logout())}  className="item"><p className="ui primary button">Çıkış Yap</p></Link></>
       :
       <>

@@ -12,7 +12,8 @@ const initialState={
         StudentNumber:"",
         
     },
-    Lesson:[]
+    Lesson:[],
+    loading:false
 }
 
 const auth = createSlice({
@@ -33,8 +34,25 @@ const auth = createSlice({
         },
         setLessons:(state,action)=>{
             state.Lesson=action.payload
+        },
+        authorization:(state,action)=>{
+            if(sessionStorage.getItem("accessToken"))
+            {
+                console.log("Authenticated");
+            }
+            else{
+                window.location.assign("/Giris")
+            }
+        
+        },
+        loading:(state)=>{
+            state.loading=true;
+        },
+        loadingFalse:(state)=>{
+            state.loading=false;
         }
     }
+
 })
-export const {login,logout,authenticated,setLessons} = auth.actions
+export const {login,logout,authenticated,setLessons,authorization,loading,loadingFalse} = auth.actions
 export default auth.reducer;

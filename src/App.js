@@ -3,7 +3,6 @@ import NavbarNm from "./components/NavbarNm";
 import NavbarSm from "./components/NavbarSm";
 import { useMediaQuery } from 'react-responsive'
 import {BrowserRouter as Router , Route, useLocation} from "react-router-dom";
-import Hakkinda from "./components/Hakkinda";
 import HomePage from "./components/HomePage";
 import Register from "./components/Register";
 import Login from "./components/Login";
@@ -14,16 +13,23 @@ import LessonList from "./components/LessonList";
 import AboutUser from "./components/AboutUser";
 import ResetPassword from "./components/ResetPassword";
 import ForgotPassword from "./components/ForgotPassword";
-function App() {
+import MyLesson from "./components/MyLesson"
+import LessonProcess from "./components/LessonProcess";
+import LessonFiles from "./components/LessonFiles"
+function App(props) {
   const dispatch = useDispatch();
   const location = useSelector(state=>state.todo);
   dispatch(setLessons(JSON.parse(sessionStorage.getItem("Lessons"))))
   useEffect(()=>{
     if(sessionStorage.getItem("accessToken"))
     {
-      dispatch(setLessons(JSON.parse(sessionStorage.getItem("Lessons"))))
+      dispatch(setLessons(JSON.parse(sessionStorage.getItem("Lessons"))));
       dispatch(login(JSON.parse(sessionStorage.getItem("User"))));
-    
+    }
+  })
+  useEffect(()=>{
+    if(sessionStorage.getItem("accessToken"))
+    {
          axios.get("https://localhost:7082/api/Auth/AuthValid",{headers:{
           'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
         }}).then((response)=>console.log(response)).catch((e)=>{
@@ -38,12 +44,13 @@ function App() {
                 sessionStorage.setItem("refreshToken",response.data.data.refreshToken);
               }).catch((e)=>{
                 sessionStorage.clear();
+                window.location.assign("/Giris");
               });
           }
         })
       
     }
-  },[location])
+  })
   const md = useMediaQuery({ query: "(min-width:768px)" });
   return (
     <Router>
@@ -51,13 +58,16 @@ function App() {
       <header className="App-header container "style={{height:'100vh',backgroundColor:"#EFEFEE"}}>
         {md?<NavbarNm/>:<NavbarSm/>}
         <Route path="/" exact component={HomePage}></Route>
-        <Route path="/Hakkinda" component={Hakkinda}></Route>
-        <Route path="/Kayitol" component ={Register}></Route>
-        <Route path="/Giris" component={Login}></Route>
-        <Route path="/Dersler" component={LessonList}></Route>
-        <Route path="/Bilgiler" component={AboutUser}></Route>
-        <Route path="/SifremiSifirla" component={ResetPassword}></Route>
-        <Route path="/SifremiUnuttum" component={ForgotPassword}></Route>
+        <Route path="/Kayitol"  component ={Register}></Route>
+        <Route path="/Giris"  component={Login}></Route>
+        <Route path="/Dersler"  component={LessonList}></Route>
+        <Route path="/Bilgilerim"  component={AboutUser}></Route>
+        <Route path="/SifremiSifirla"  component={ResetPassword}></Route>
+        <Route path="/SifremiUnuttum"  component={ForgotPassword}></Route>
+        <Route path="/Derslerim" exact  component={MyLesson}></Route>
+        <Route path="/DersDuzenle" component={LessonProcess}></Route>
+        <Route path="/Derslerim/:id" component={LessonFiles}></Route>
+        
       </header>
     </div>
     </Router>
