@@ -2,9 +2,10 @@ import React,{useEffect, useState} from "react";
 import axios from "axios";
 import {useDispatch,useSelector} from "react-redux";
 import { authenticated,login,logout,setLessons } from "../stores/auth";
-import {Header,Segment,Form,Button,Message} from "semantic-ui-react";
+import {Header,Segment,Form,Button,Message,Container} from "semantic-ui-react";
 import ErrorMessage from "./ErrorMessage"
 import {Link} from "react-router-dom"
+import { calculateNewValue } from "@testing-library/user-event/dist/utils";
 
 
 const Login = (props)=>{
@@ -92,7 +93,7 @@ const Login = (props)=>{
     
 
     return(
-            
+        <Container style={{minHeight:"100vh"}}>
             <>{ checkMessage?<ErrorMessage Message={message}/>:<div></div>}<>
             <Header textAlign="center" style={{ fontSize: '2em', marginTop: '15vh' }}>GİRİŞ YAP</Header>
             <Segment className="center text container inverted " style={{ marginTop: '5vh' }}>
@@ -111,6 +112,6 @@ const Login = (props)=>{
                 <br/>
                 <Button style={{ backgroundColor: "#027373", color: "white",marginTop:"2%" }} type='submit'>Giriş Yap</Button>
             </Form>
-        </Segment></></>);
+        </Segment></></></Container>);
 }
 export default Login;

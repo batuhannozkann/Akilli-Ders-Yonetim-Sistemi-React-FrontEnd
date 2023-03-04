@@ -16,6 +16,7 @@ import ForgotPassword from "./components/ForgotPassword";
 import MyLesson from "./components/MyLesson"
 import LessonProcess from "./components/LessonProcess";
 import LessonFiles from "./components/LessonFiles"
+import {Container} from "semantic-ui-react"
 function App(props) {
   const dispatch = useDispatch();
   const location = useSelector(state=>state.todo);
@@ -54,8 +55,8 @@ function App(props) {
   const md = useMediaQuery({ query: "(min-width:768px)" });
   return (
     <Router>
-    <div className="App"  >
-      <header className="App-header container "style={{height:'100vh',backgroundColor:"#EFEFEE"}}>
+    <div className="App">
+      <header className="App-header"style={{backgroundColor:"#EFEFEE",minHeight:"100vh"}}>
         {md?<NavbarNm/>:<NavbarSm/>}
         <Route path="/" exact component={HomePage}></Route>
         <Route path="/Kayitol"  component ={Register}></Route>
@@ -64,10 +65,9 @@ function App(props) {
         <Route path="/Bilgilerim"  component={AboutUser}></Route>
         <Route path="/SifremiSifirla"  component={ResetPassword}></Route>
         <Route path="/SifremiUnuttum"  component={ForgotPassword}></Route>
-        <Route path="/Derslerim" exact  component={MyLesson}></Route>
+        <Route path="/Derslerim" exact component={MyLesson}></Route>
         <Route path="/DersDuzenle" component={LessonProcess}></Route>
         <Route path="/Derslerim/:id" component={LessonFiles}></Route>
-        
       </header>
     </div>
     </Router>

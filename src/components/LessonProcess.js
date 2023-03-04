@@ -6,6 +6,7 @@ import {ref,uploadBytesResumable,getDownloadURL,deleteObject} from "firebase/sto
 import {Link} from "react-router-dom"
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import EditLesson from "./EditLesson";
 import { useDispatch,useSelector } from "react-redux";
 import {loading,loadingFalse} from "../stores/auth"
 import ErrorMessage from "./ErrorMessage"
@@ -14,7 +15,7 @@ import { isDisabled } from "@testing-library/user-event/dist/utils";
 const LessonProcess=(props)=>{
     useEffect(()=>{
         { axios.get("https://localhost:7082/api/Lesson")
-    .then((response)=>{
+    .then((response)=>{console.log(response);
         setLesson(response.data.data);
     }).catch((e)=>{console.log(e)});
     }
@@ -60,7 +61,7 @@ const LessonProcess=(props)=>{
         console.log('Upload is running');
         break;
     }
-  }, 
+  },
   (error) => {
         console.log(error);
   }, 
@@ -90,7 +91,7 @@ const LessonProcess=(props)=>{
     }
         console.log(selectedLesson);
     return(
-        <Container>
+        <Container style={{minHeight:"100vh"}}>
     <Grid fluid style={{margin:"2%"}}>
         <Grid.Row columns={2} >
             <Grid.Column width={5}>
@@ -106,7 +107,11 @@ const LessonProcess=(props)=>{
         </select>
         <br/>
         <Button onClick={onClickGetLesson} className="primary button" style={{marginTop:'3%'}}>Dersi Getir</Button>
+        <div style={{marginTop:10}}>
+              <EditLesson LessonId = {selectedLesson.id}></EditLesson>
+        </div>
         <div style={{marginTop:'10%'}}>
+          <Header>Dosya Yükle</Header>
         <input className="" type="file" onChange={changeFile}></input>
         <br/>
         <button style={{marginTop:'2%'}}type="submit" onClick={uploadFile}>
@@ -120,8 +125,8 @@ const LessonProcess=(props)=>{
     {checkMessage?
     <ErrorMessage Message={errorMessage}></ErrorMessage>:""}
         </Grid.Column>
-        <Grid.Column width={2}></Grid.Column>
-        <Grid.Column width={9}>
+        <Grid.Column width={3}></Grid.Column>
+        <Grid.Column width={7}>
         <Table celled striped>
     <Table.Header>
       <Table.Row>

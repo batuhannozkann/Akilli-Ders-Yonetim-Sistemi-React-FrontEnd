@@ -1,7 +1,7 @@
 
 import axios, { isCancel } from "axios";
 import React, { useEffect, useState } from "react";
-import { Grid, Header,Button, Form, Segment,List} from "semantic-ui-react"
+import { Grid, Header,Button, Form, Segment,List,Container} from "semantic-ui-react"
 import {Link} from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
 import { authorization } from "../stores/auth";
@@ -80,7 +80,9 @@ const AboutUser = (props)=>{
         });
 
     return (
-        <Grid container fluid>
+        <Container style={{height:"100vh"}}>
+        <Grid >
+            <Grid.Row columns={2} >
             <Grid.Column style={{ marginTop: "5%" }} width={8}>
                 <Form>
                     <Form.Group widths='equal'>
@@ -162,9 +164,9 @@ const AboutUser = (props)=>{
                     </List>
                 </Segment>
             </Grid.Column>
+            </Grid.Row>
         </Grid>
-                    
-                    
+        </Container>
              
     )
 ;
