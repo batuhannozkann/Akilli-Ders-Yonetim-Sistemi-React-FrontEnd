@@ -6,6 +6,12 @@ const AddLesson = ()=>{
         axios.get("https://localhost:7082/api/Academicians").then((response)=>{console.log(response.data.data);setAcademicians(response.data.data)}).catch((e)=>{console.log(e)});
     }
     ,[]);
+    const postLesson = ()=>{
+        axios.post("https://localhost:7082/api/Lesson",lesson)
+        .then((response)=>{console.log(response.data)})
+        .catch((e)=>{console.log(e)});
+        window.location.reload();
+    }
     const [academicians,setAcademicians] = useState([]);
     const [academicianInput,setAcademicianInput] = useState({});
     const [lesson,setLesson] = useState({
@@ -24,7 +30,7 @@ const AddLesson = ()=>{
     return(
     <Container>
     <Header>Ders Ekle</Header>
-<Form>
+<Form onSubmit={postLesson}>
 <Form.Field>
 <label>Ders Adı</label>
 <input required placeholder='Ders Adı' name="name" value={lesson.name} onChange={onChange} />
@@ -37,12 +43,7 @@ const AddLesson = ()=>{
 <Form.Field>
 </Form.Field>
 <Form.Field>
-<label>Öğretim Üyesi</label>
-<input readOnly value={lesson.academicianId!=""?academicianInput.title+" "+academicianInput.firstName+" "+academicianInput.lastName:""}>
-</input>
-</Form.Field>
-<Form.Field>
-<label>Öğretim Üyesi Değiştir</label>
+<label>Öğretim Üyesi Seç</label>
 <select onChange={selectAcademician}>
 <option selected value=" ">Öğretim Üyesi Seçiniz</option>
 {academicians.map((i)=>{
@@ -61,7 +62,7 @@ onChange={onChange}
 name="description"
 ></TextArea>
 </Form.Field>
-<Button type="submit" className="small button primary">Güncelle</Button>
+<Button type="submit" className="small button primary">Dersi Ekle</Button>
 </Form></Container>)
 }
 export default AddLesson;
