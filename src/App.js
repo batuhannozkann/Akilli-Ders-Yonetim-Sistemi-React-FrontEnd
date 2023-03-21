@@ -17,6 +17,12 @@ import MyLesson from "./components/MyLesson"
 import LessonProcess from "./components/LessonProcess";
 import LessonFiles from "./components/LessonFiles"
 import {Container} from "semantic-ui-react"
+import EditLesson from "./components/EditLesson";
+import LessonUpload from "./components/LessonUpload";
+import LessonDelete from "./components/LessonDelete";
+import AddLesson from "./components/AddLesson";
+import UserList from "./components/UserList";
+import EditUser from "./components/EditUser";
 function App(props) {
   const dispatch = useDispatch();
   const location = useSelector(state=>state.todo);
@@ -66,8 +72,10 @@ function App(props) {
         <Route path="/SifremiSifirla"  component={ResetPassword}></Route>
         <Route path="/SifremiUnuttum"  component={ForgotPassword}></Route>
         <Route path="/Derslerim" exact component={MyLesson}></Route>
-        <Route path="/DersDuzenle" component={LessonProcess}></Route>
+        <Route path="/DersDuzenle" exact component={LessonProcess}></Route>
         <Route path="/Derslerim/:id" component={LessonFiles}></Route>
+        <Route path="/Kullanicilar" exact component={UserList}></Route>
+        <Route path="/Kullanicilar/:id" component={EditUser}></Route>
       </header>
     </div>
     </Router>

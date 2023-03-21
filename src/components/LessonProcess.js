@@ -1,4 +1,5 @@
 import { Grid,Icon,Table,Header,Button,Progress,Container,Segment} from "semantic-ui-react";
+import {BrowserRouter as Router , Route, useLocation} from "react-router-dom";
 import axios, { isCancel } from "axios"
 import react,{useEffect, useState} from "react";
 import {storage} from "../firebase-client"
@@ -14,12 +15,13 @@ import LessonUpload from "./LessonUpload"
 
 const LessonProcess=(props)=>{
     const [icons,setIcons] = useState({
-      add:false,
+      add:true,
       delete:false,
-      edit:true,
+      edit:false,
       upload:false
     });
     return(
+      <Router>
         <Container style={{minHeight:"100vh"}}>
           <div style={{marginTop:20,textAlign:"center"}}>
           <Link onClick={()=>{setIcons({add:true,edit:false,delete:false,upload:false})}}><Icon name="add" className="big"></Icon></Link>
@@ -28,7 +30,6 @@ const LessonProcess=(props)=>{
           <Link onClick={()=>{setIcons({add:false,edit:false,delete:false,upload:true})}} style={{paddingLeft:20}}><Icon name="upload" className="big"></Icon></Link>
           </div>
     <Grid fluid style={{margin:"2%"}}>
-        
         <div style={{marginTop:10}}>
               {
                 icons.add==true?<AddLesson></AddLesson>:""
@@ -43,6 +44,6 @@ const LessonProcess=(props)=>{
                 icons.upload==true?<LessonUpload></LessonUpload>:""
               }
         </div>
-    </Grid></Container>);
+    </Grid></Container></Router>);
 }
 export default LessonProcess;
