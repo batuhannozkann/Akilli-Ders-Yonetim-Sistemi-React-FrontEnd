@@ -67,7 +67,9 @@ const LessonUpload = ()=>{
         () => 
             {
             getDownloadURL(Task.snapshot.ref).then((downloadURL) => { if(postFile.lessonId!==""){
-            axios.post("https://localhost:7082/api/Lesson/AddFileToLesson",{...postFile,fileUrl:downloadURL}).
+            axios.post("https://localhost:7082/api/Lesson/AddFileToLesson",{...postFile,fileUrl:downloadURL},{headers:{
+              'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
+            }}).
             then((response)=>{console.log(response);setError(false);setErrorMessage([]);setUploadMessage("Dosya Yüklendi");}).catch((e)=>{setError(true);setUploadMessage("Hata");setErrorMessage(e.response.data.errors);console.log(e);});
             }
         });
@@ -75,7 +77,9 @@ const LessonUpload = ()=>{
             });
     };
     const onClickGetLesson =()=>{
-        axios.get(`https://localhost:7082/api/Lesson/GetLesson?id=${selectedLesson.id}`)
+        axios.get(`https://localhost:7082/api/Lesson/GetLesson?id=${selectedLesson.id}`,{headers:{
+          'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
+        }})
         .then((response)=>{
             setLessonFiles(response.data.data.lessonFiles);
             console.log(response);
@@ -84,7 +88,9 @@ const LessonUpload = ()=>{
     const onClickDelete =(fileId,filename)=>{
         const fileRef=ref(storage,`${selectedLesson.lessonCode}/${filename}`);
         deleteObject(fileRef).catch((e)=>{console.log(e)});
-        axios.post('https://localhost:7082/api/Lesson/DeleteFile',{id:fileId})
+        axios.post('https://localhost:7082/api/Lesson/DeleteFile',{id:fileId},{headers:{
+          'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
+        }})
         .then((response)=>{console.log(response)})
         .catch((e)=>{console.log(e)});
     }

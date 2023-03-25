@@ -6,12 +6,16 @@ const LessonDelete = ()=>{
     const [lessons,setLessons] = useState([]);
     const [selectedLesson,setSelectedLesson] = useState();
     useEffect(()=>{
-        axios.get("https://localhost:7082/api/Lesson")
+        axios.get("https://localhost:7082/api/Lesson",{headers:{
+            'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
+          }})
         .then((response)=>{console.log(response.data.data);setLessons(response.data.data);setSelectedLesson(response.data.data[0].id)})
         .catch((e)=>{console.log(e)});
     },[])
     const deleteLesson = ()=>{
-        axios.post("https://localhost:7082/api/Lesson/DeleteLesson",{id:selectedLesson})
+        axios.post("https://localhost:7082/api/Lesson/DeleteLesson",{id:selectedLesson},{headers:{
+            'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
+          }})
         .then((response)=>{console.log(response.data.data)})
         .catch((e)=>{console.log(e)})
         window.location.reload();

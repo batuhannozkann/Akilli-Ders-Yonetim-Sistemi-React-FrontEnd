@@ -12,23 +12,50 @@ const EditUser = (props) =>{
     });
     const [changeRole,setChangeRole] = useState([]);
     const [addedRole,setAddedRole] = useState([]);
+    const [addedRoleIds,setAddedRoleIds] = useState([]);
     const [roles,setRoles] = useState([]);
     const [currentRoles,setCurrentRoles] = useState([]);
-    console.log(addedRole);
+    const [deleteRoles,setDeleteRoles] = useState([]);
+    const [infoUser,setInfoUser] = useState({
+      firstName:"",
+      lastName:"",
+    })
+    console.log(infoUser);
     useEffect(()=>{
-      axios.get("https://localhost:7082/api/User/GetAllRoles")
+      axios.get("https://localhost:7082/api/User/GetAllRoles",{headers:{
+        'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
+      }})
       .then((response)=>{setRoles(response.data.data);setSelectedRole({name:response.data.data[0].name,id:response.data.data[0].id});})
       .catch((e)=>{console.log(e)});
-      axios.post("https://localhost:7082/api/User/GetUserRoles",userId)
+      axios.post("https://localhost:7082/api/User/GetUserRoles",userId,{headers:{
+        'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
+      }})
       .then((response)=>{setCurrentRoles(response.data.data)})
       .catch((e)=>{console.log(e)});
     },[]);
+    const postRoleHandle =()=>{
+      axios.post("https://localhost:7082/api/User/ClaimRoleToUser",{roleIds:addedRoleIds,userId:id},{headers:{
+        'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
+      }})
+      .then((response)=>{console.log(response);window.location.reload();})
+      .catch((e)=>console.log(e));
+    }
+    const deleteRoleHandle=(i)=>{
+      axios.post("https://localhost:7082/api/User/DeleteRoleFromUser",{Role:i,UserId:id},{headers:{
+        'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
+      }})
+      .then((response)=>{console.log(response);window.location.reload();})
+      .catch((e)=>{console.log(e);})
+    }
+    const HandleInfos=(e)=>{
+      setInfoUser({...infoUser,[e.target.name]:e.target.value})
+    }
+    console.log(addedRole);
     const [selectedRole,setSelectedRole] = useState({
       id:"",
       name:""
     })
-  
-    console.log(roles[0]);
+    console.log(currentRoles)
     console.log(selectedRole);
     return(
       <Form className="container">
@@ -36,15 +63,11 @@ const EditUser = (props) =>{
         <Grid.Column width={10} style={{marginTop:50}}>
         <Form.Field>
       <label>İsim</label>
-      <input placeholder='First Name' />
+      <input placeholder='First Name'  value={infoUser.firstName} name="firstName" onChange={HandleInfos} />
     </Form.Field>
     <Form.Field>
       <label>Soyisim</label>
-      <input placeholder='Last Name' />
-    </Form.Field>
-    <Form.Field>
-      <label>Email</label>
-      <input placeholder='Last Name' />
+      <input placeholder='Last Name' value={infoUser.lastName} name="lastName" onChange={HandleInfos} />
     </Form.Field>
     <Form.Field>
       <Button type="submit" className="primary">Güncelle</Button>
@@ -54,7 +77,7 @@ const EditUser = (props) =>{
         <Grid.Column width={5} className="container" style={{marginTop:50}}>
             <Header>Rol Ekle/Çıkar</Header>
             <Form.Field>
-                        <select onChange={(e)=>roles.map(i=>{e.target.value==i.id?setSelectedRole({name:i.name,id:i.id}):console.log("hata")})
+                        <select onChange={(e)=>roles.map(i=>{e.target.value==i.id?setSelectedRole({name:i.name,id:i.id}):console.log()})
                         } 
                         multiple={false} className="ui fluid dropdown  selection">
                             {roles.map((i) => {
@@ -69,7 +92,7 @@ const EditUser = (props) =>{
                         {addedRole.map((i) => {
                             return (
                                 <List.Item>
-                                    <Link onClick={() => { addedRole.splice(addedRole.indexOf(i), 1); } }><List.Icon
+                                    <Link onClick={() => { addedRole.splice(addedRole.indexOf(i), 1);addedRoleIds.splice(addedRoleIds.indexOf(i.id),1)} }><List.Icon
                                         style={{ paddingLeft: "98%" }} name="trash alternate"></List.Icon></Link>
                                     <List.Icon name='book' size='large' verticalAlign='middle' />
                                     <List.Content>
@@ -81,7 +104,8 @@ const EditUser = (props) =>{
                         })}
                     </List>
                 </Segment>
-                <Link onClick={()=>addedRole.push(selectedRole)} className="ui primary button">Listeye Rol Ekle</Link>
+                <Link onClick={()=>{addedRole.push(selectedRole);addedRoleIds.push(selectedRole.id)}} className="ui primary button">Listeye Rol Ekle</Link>
+                <Link onClick={postRoleHandle} className="ui primary button">Gönder</Link>
                 <Segment divided>
                     <Header>Aktif Roller</Header>
                     <List divided>
@@ -96,7 +120,7 @@ const EditUser = (props) =>{
                 buttons: [
                   {
                     label: 'Yes',
-                    onClick: () => {""}
+                    onClick: () => {deleteRoleHandle(i);}
                   },
                   {
                     label: 'No',

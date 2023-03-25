@@ -6,6 +6,8 @@ import {Header,Segment,Form,Button,Message,Container} from "semantic-ui-react";
 import ErrorMessage from "./ErrorMessage"
 import {Link} from "react-router-dom"
 import { calculateNewValue } from "@testing-library/user-event/dist/utils";
+import jwt_decode from "jwt-decode";
+
 
 
 const Login = (props)=>{
@@ -56,6 +58,8 @@ const Login = (props)=>{
                     sessionStorage.setItem("accessToken",response.data.data.accessToken);
                     sessionStorage.setItem("refreshToken",response.data.data.refreshToken);
                     sessionStorage.setItem("User",JSON.stringify(response.data.data.user));
+                    sessionStorage.setItem("decodeToken",JSON.stringify(jwt_decode(response.data.data.accessToken)));
+                    sessionStorage.setItem("userRoles",JSON.stringify(response.data.data.roleList));
                     dispatch(login(response.data.data.user));
                     getLessons();
                 });

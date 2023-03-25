@@ -14,7 +14,9 @@ const MyLesson = (props)=>{
     const user = JSON.parse(sessionStorage.getItem("User"));
     useEffect(()=>{
         dispatch(authorization());
-        axios.get(`https://localhost:7082/api/Student/GetLessonsOfStudent/${user.studentNumber}`)
+        axios.get(`https://localhost:7082/api/Student/GetLessonsOfStudent/${user.studentNumber}`,{headers:{
+            'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
+          }})
         .then((response)=>{console.log(response.data.data[0].lessons);setLessons(response.data.data[0].lessons)})
         .catch((e)=>{console.log(e)});
       },[])

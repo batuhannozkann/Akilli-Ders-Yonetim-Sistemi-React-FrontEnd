@@ -12,6 +12,7 @@ const NavbarNm = (props) =>{
     const [active,setActive] = useState("");
     const activeItem = "item active";
     const normalItem = "item";
+    const item=(JSON.parse(sessionStorage.getItem("decodeToken")));
     return(
     <div className="ui inverted segment" style={{margin:0}}>
     <div className="ui inverted secondary pointing menu">

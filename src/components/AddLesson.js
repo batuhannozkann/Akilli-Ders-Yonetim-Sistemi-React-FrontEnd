@@ -3,11 +3,15 @@ import {Form,Button,Header,Container, TextArea} from "semantic-ui-react";
 import axios from "axios";  
 const AddLesson = ()=>{
     useEffect(()=>{
-        axios.get("https://localhost:7082/api/Academicians").then((response)=>{console.log(response.data.data);setAcademicians(response.data.data)}).catch((e)=>{console.log(e)});
+        axios.get("https://localhost:7082/api/Academicians",{headers:{
+            'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
+          }}).then((response)=>{console.log(response.data.data);setAcademicians(response.data.data)}).catch((e)=>{console.log(e)});
     }
     ,[]);
     const postLesson = ()=>{
-        axios.post("https://localhost:7082/api/Lesson",lesson)
+        axios.post("https://localhost:7082/api/Lesson",lesson,{headers:{
+            'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
+          }})
         .then((response)=>{console.log(response.data)})
         .catch((e)=>{console.log(e)});
         window.location.reload();

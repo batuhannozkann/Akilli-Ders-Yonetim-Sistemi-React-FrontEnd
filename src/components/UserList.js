@@ -39,7 +39,9 @@ const UserList = ()=>{
         }
     ];
     const [data,setData] = useState([]);
-    useEffect(()=>{ axios.get("https://localhost:7082/api/User/GetAllUsers")
+    useEffect(()=>{ axios.get("https://localhost:7082/api/User/GetAllUsers",{headers:{
+        'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
+      }})
     .then((response)=>{console.log(response);setUserList(response.data.data)})
     .catch((e)=>{console.log(e)});},[]);
     userList?.map((i)=>{DataList.push({firstName:i.firstName,lastName:i.lastName,email:i.email,studentNumber:i.studentNumber,id:i.id})});
