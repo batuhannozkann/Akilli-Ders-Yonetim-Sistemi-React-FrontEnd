@@ -9,7 +9,9 @@ const LessonFiles =(props)=>{
     console.log(id);
     const [files,setFiles] = useState();
     useEffect(()=>{
-        axios.get(`https://localhost:7082/api/Lesson/GetLesson?id=${id}`)
+        axios.get(`https://localhost:7082/api/Lesson/GetLesson?id=${id}`,{headers:{
+          'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
+        }})
         .then((response)=>{
             console.log(response.data.data.lessonFiles)
             setFiles(response.data.data.lessonFiles);
