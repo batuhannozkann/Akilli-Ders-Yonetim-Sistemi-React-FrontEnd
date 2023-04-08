@@ -22,6 +22,12 @@ const EditUser = (props) =>{
     })
     console.log(infoUser);
     useEffect(()=>{
+      axios.get(`https://localhost:7082/api/User/GetUserById?id=${id}`,{headers:{
+        'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
+      }})
+      .then((response)=>{setInfoUser({firstName:response.data.data.firstName,lastName:response.data.data.lastName});console.log(response)})
+      .catch((e)=>console.log(e));
+
       axios.get("https://localhost:7082/api/User/GetAllRoles",{headers:{
         'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
       }})
@@ -50,15 +56,23 @@ const EditUser = (props) =>{
     const HandleInfos=(e)=>{
       setInfoUser({...infoUser,[e.target.name]:e.target.value})
     }
+    const UpdateUserInfos=(e)=>{
+      axios.post("https://localhost:7082/api/User/UpdateUserInfos",{...infoUser,id:id},{headers:{
+        'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
+      }})
+      .then((response)=>{console.log(response)})
+      .catch((e)=>{console.log(e)});
+    }
     console.log(addedRole);
     const [selectedRole,setSelectedRole] = useState({
       id:"",
       name:""
     })
+
     console.log(currentRoles)
     console.log(selectedRole);
     return(
-      <Form className="container">
+      <Form className="container" onSubmit={UpdateUserInfos}>
     <Grid className="container">
         <Grid.Column width={10} style={{marginTop:50}}>
         <Form.Field>

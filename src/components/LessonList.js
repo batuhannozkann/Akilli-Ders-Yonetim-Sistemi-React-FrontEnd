@@ -3,16 +3,7 @@ import { Table ,Icon,Header} from 'semantic-ui-react'
 import {storage} from "../firebase-client"
 import {ref,uploadBytes} from "firebase/storage"
 const LessonList=()=>{
-  const [file, setFile] = useState('');
-  const [imageUrl, setUrl] = useState();
-  const uploadFile=(event)=>{
-    const fileRef=ref(storage,`NYP/${file.name}`);
-    uploadBytes(fileRef,file)
-  };
-  console.log(file);
-  const changeFile = async (e)=>{
-      await setFile(e.target.files[0]);
-  };
+  
     return(
       <><Table celled style={{margin:"0"}} className="fluid">
       <Table.Header>

@@ -6,8 +6,14 @@ import {Link} from "react-router-dom"
 
 const UserList = ()=>{
     const [userList,setUserList] = useState([]);
+    const [counter,setCounter] = useState(1);
     const handleOnSelect = ({selectedRows})=>{
         console.log(selectedRows);
+    }
+    const DeleteUser=(userId)=>{
+        axios.post("https://localhost:7082/api/User/DeleteUser",{id:userId})
+        .then((response)=>{console.log(response);setCounter(counter+1)})
+        .catch((error)=>{console.log(error)});
     }
     const DataList = [];
     const columns=[
@@ -33,7 +39,7 @@ const UserList = ()=>{
         },
         {
             cell: row => <div><Link to={`/Kullanicilar/${row.id}`} onClick={()=>{console.log(row.id)}} className="ui primary button" style={{margin:3}}>Düzenle</Link><br></br>
-            <Link onClick={()=>{console.log(row.id)}} className="ui button" style={{margin:3,backgroundColor:"red",color:"white"}}>Sil</Link></div>,
+            <Link onClick={()=>{DeleteUser(row.id);}} className="ui button" style={{margin:3,backgroundColor:"red",color:"white"}}>Sil</Link></div>,
 	        allowOverflow: true,
 	        button: true,
         }
@@ -43,7 +49,7 @@ const UserList = ()=>{
         'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
       }})
     .then((response)=>{console.log(response);setUserList(response.data.data)})
-    .catch((e)=>{console.log(e)});},[]);
+    .catch((e)=>{console.log(e)});},[counter]);
     userList?.map((i)=>{DataList.push({firstName:i.firstName,lastName:i.lastName,email:i.email,studentNumber:i.studentNumber,id:i.id})});
 
     return(

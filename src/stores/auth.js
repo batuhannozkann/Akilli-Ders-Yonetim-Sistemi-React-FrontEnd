@@ -12,6 +12,7 @@ const initialState={
         StudentNumber:"",
         
     },
+    roleList:[],
     Lesson:[],
     loading:false
 }
@@ -21,12 +22,13 @@ const auth = createSlice({
     initialState,
     reducers:{
         authenticated:(state)=>{
-            state.user=true
+            
         },
         login:(state,action)=>{
             state.user=true
             state.userProps=action.payload
             state.token=sessionStorage.getItem("accessToken")
+            state.roleList=JSON.parse(sessionStorage.getItem("userRoles"))
         },
         logout:state=>{
             state.user=false

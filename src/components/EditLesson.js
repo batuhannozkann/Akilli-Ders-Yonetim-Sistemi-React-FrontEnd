@@ -14,17 +14,23 @@ const EditLesson = (props)=>{
         description:"",
     });
     useEffect(()=>{
-        axios.get("https://localhost:7082/api/Lesson")
+        axios.get("https://localhost:7082/api/Lesson",{headers:{
+            'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
+          }})
     .then((response)=>{console.log(response);
         setLessons(response.data.data);
     }).catch((e)=>{console.log(e)});
-        axios.get("https://localhost:7082/api/Academicians").then((response)=>{console.log(response.data.data);setAcademicians(response.data.data)}).catch((e)=>{console.log(e)});
+        axios.get("https://localhost:7082/api/Academicians",{headers:{
+            'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
+          }}).then((response)=>{console.log(response.data.data);setAcademicians(response.data.data)}).catch((e)=>{console.log(e)});
     }
     ,[]);
     const getLesson=(e)=>{
         if(lessonId!="")
         {
-            axios.get(`https://localhost:7082/api/Lesson/GetLesson?id=${lessonId}`)
+            axios.get(`https://localhost:7082/api/Lesson/GetLesson?id=${lessonId}`,{headers:{
+                'Authorization':'Bearer '+sessionStorage.getItem("accessToken")
+              }})
     .then((response)=>{console.log(response.data.data);setLesson({name:response.data.data.name,lessonCode:response.data.data.lessonCode,academicianId:response.data.data.academicianId,description:response.data.data.description});setAcademicianInput(response.data.data.academician);})
     .catch((e)=>console.log(e));
         }

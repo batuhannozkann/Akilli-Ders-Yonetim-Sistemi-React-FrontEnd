@@ -3,13 +3,17 @@ import {Form,Button,Segment,Header} from "semantic-ui-react"
 import axios from "axios";
 import { calculateNewValue } from "@testing-library/user-event/dist/utils";
 import ErrorMessage from "./ErrorMessage";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { authorization , authenticated} from "../stores/auth";
 
 const Register = (props)=>{
     const auth = useSelector(state=>state.auth.user);
+    const dispatch = useDispatch();
+    console.log(auth);
     useEffect(()=>{
+    
         auth?props.history.push("/"):console.log("Kayıt olabilir");
-    },[])
+    },[auth])
     console.log(auth)
     const [message,setMessage] = useState([]);
     const checkMessage = message.length!==0;

@@ -12,10 +12,11 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 const AboutUser = (props)=>{
     const dispatch=useDispatch();
-    const userLessons= JSON.parse(sessionStorage.getItem("Lessons"));
+    const userInfo= JSON.parse(sessionStorage.getItem("User"));
     const user = useSelector(state=>state.auth.userProps);
     const [myLessons,setMyLessons] = useState([]);
-
+    console.log(user.studentNumber);
+   
    
     const [lessons,setLessons] = useState([]);
     const [value, setValue] = useState({
@@ -26,6 +27,7 @@ const AboutUser = (props)=>{
         studentNumber:""
         })
     const [addedLesson,setAddedLesson] = useState([]);
+    console.log(addedLesson);   
     const refreshClick = ()=>{
         getLessons();
         window.location.reload();
@@ -48,8 +50,8 @@ const AboutUser = (props)=>{
         }}
     useEffect(()=>{
         dispatch(authorization());
-        axios.get(`https://localhost:7082/api/Student/GetLessonsOfStudent/${userLessons.studentNumber}`)
-        .then((response)=>{setMyLessons(response.data.data[0].lessons)}).catch(e=>{console.log(e)});
+        axios.get(`https://localhost:7082/api/Student/GetLessonsOfStudent/${(userInfo.studentNumber)}`)
+        .then((response)=>{console.log(response);setMyLessons(response.data.data[0].lessons)}).catch(e=>{console.log(e)});
         try{
             axios.get("https://localhost:7082/api/Lesson")
             .then((response)=>{
@@ -67,7 +69,7 @@ const AboutUser = (props)=>{
     }
     const postLessons= (LessonStudentList)=>{
          axios.post("https://localhost:7082/api/Student/AddLessonOfStudent",LessonStudentList).
-        then((response)=>{console.log(response)
+        then((response)=>{console.log(response);window.location.reload();
         }).catch((e)=>{console.log(e)});
     }
     const postClick = ()=>{
@@ -127,7 +129,7 @@ const AboutUser = (props)=>{
                         })}
                     </List>
                 </Segment>
-                <Button onClick={()=>{postClick();window.location.reload();}} className="primary" style={{ marginTop: 10 }}>Gönder</Button>
+                <Button onClick={()=>{postClick();}} className="primary" style={{ marginTop: 10 }}>Gönder</Button>
                 <Button onClick={refreshClick} className="primary" style={{ marginTop: 10 }}>Yenile</Button>
                 <Segment divided>
                     <Header>ALDIĞIM DERSLER</Header>
@@ -143,7 +145,7 @@ const AboutUser = (props)=>{
                 buttons: [
                   {
                     label: 'Yes',
-                    onClick: () => {deleteLessons({ LessonId: String(obj.lesson.id), StudentNumber: String(user.studentNumber) });window.location.reload();}
+                    onClick: () => {deleteLessons({ LessonId: String(obj.lesson.id), StudentNumber:user.studentNumber });window.location.reload();}
                   },
                   {
                     label: 'No',
